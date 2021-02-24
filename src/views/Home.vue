@@ -1,19 +1,24 @@
 <script>
 import { onMounted, ref } from 'vue';
+import MyHeader from '../components/MyHeader.vue';
+import MyTodoList from '../components/MyTodoList.vue';
+import { Api } from '../services/api'
+
 export default {
     name: 'Home',
+    components: {
+        MyHeader,
+        MyTodoList
+    },
     setup() {
         let todos = ref([]);
 
-        const fetchTodos = () => {
-            fetch('https://jsonplaceholder.typicode.com/todos/')
-                .then((response) => response.json())
-                .then((response) => {
-                    todos.value = response;
-                });
+        const fetchTodos = async () => {
+            const api = new Api('todos')
+            return await api.fetch()
         };
-        onMounted(() => {
-            fetchTodos();
+        onMounted(async () => {
+            todos.value = await fetchTodos();
         });
 
         return {
@@ -25,58 +30,16 @@ export default {
 
 <template>
     <div>
-        <header class="header">
-            <nav class="header-nav"></nav>
-            <div class="container">
-                <h1>我的代办事项</h1>
-            </div>
-        </header>
+        <MyHeader :listName="代办事项列表"/>
         <main>
-            <div class="container">
-                <div class="todo-list">
-                    <div v-for="{ id, title, completed } in todos" :key="id" class="todo-list__task">
-                        <span :class="{ 'todo-list__task--completed': completed }">
-                            {{ title }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <MyTodoList :todos="todos"/>
         </main>
     </div>
 </template>
 
 <style lang="scss">
-.header {
-    width: 100%;
-    &-nav {
-        background: teal;
-        width: 100%;
-        height: 56px;
-    }
-}
 .container {
     padding: 1.5rem;
 }
-.todo-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    &__task {
-        width: 24%;
-        padding: 1.5rem;
-        margin: 0.5%;
-        text-align: left;
-        color: #4169e1;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        &:hover {
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-        }
-        &--completed {
-            color: #2e8b57;
-            text-decoration: line-through;
-        }
-    }
-}
+
 </style>
