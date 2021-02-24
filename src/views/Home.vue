@@ -2,13 +2,17 @@
 import { onMounted, ref } from 'vue';
 import MyHeader from '../components/MyHeader.vue';
 import MyTodoList from '../components/MyTodoList.vue';
+// import MyTodoCard from '../components/MyTodoCard.vue';
+import MyTodoRow from '../components/MyTodoRow.vue';
 import { Api } from '../services/api'
 
 export default {
     name: 'Home',
     components: {
         MyHeader,
-        MyTodoList
+        MyTodoList,
+        // MyTodoCard,
+        MyTodoRow
     },
     setup() {
         let todos = ref([]);
@@ -30,9 +34,12 @@ export default {
 
 <template>
     <div>
-        <MyHeader :listName="代办事项列表"/>
+        <MyHeader listName="代办事项列表"/>
         <main>
-            <MyTodoList :todos="todos"/>
+            <MyTodoList>
+                <!-- <MyTodoCard v-for="todo in todos" :key="todo.id" :todo="todo"/> -->
+                <MyTodoRow v-for="todo in todos" :key="todo.id" :todo="todo"/>
+            </MyTodoList>
         </main>
     </div>
 </template>
