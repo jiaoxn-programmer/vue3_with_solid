@@ -1,13 +1,13 @@
 <script>
 export default {
-    name: 'MyTodoList'
-}
+    name: 'MyTodoList',
+};
 </script>
 
 <template>
     <div class="container">
         <div class="todo-list">
-            <slot/>
+            <slot />
         </div>
     </div>
 </template>
