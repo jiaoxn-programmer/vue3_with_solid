@@ -4,7 +4,6 @@ export class BaseApi {
     }
 
     async fetch(url) {
-        const response = await fetch(`${this.baseUrl}${url}`);
-        return await response.json();
+        throw new Error('没有具体的实现方法');
     }
 }
